@@ -7,8 +7,6 @@ import com.gabrielbenini.pulseapi.model.entities.Post;
 import com.gabrielbenini.pulseapi.model.entities.User;
 import com.gabrielbenini.pulseapi.repository.PostRepository;
 import com.gabrielbenini.pulseapi.repository.UserRepository;
-import com.google.cloud.firestore.Firestore;
-import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
