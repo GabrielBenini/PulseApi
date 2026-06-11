@@ -33,21 +33,7 @@ public class PostService {
         Post post = requestDTO.toEntity(user);
         postRepository.save(post);
 
-        sendFeedEvent(post.getId());
-
         return PostResponseDTO.fromEntity(post, user.getId());
-    }
-
-    public void sendFeedEvent(Long postId){
-
-        Firestore db = FirestoreClient.getFirestore();
-
-        Map<String, Object> event = new HashMap<>();
-        event.put("type", "NEW_POST");
-        event.put("postId", postId);
-        event.put("timestamp", System.currentTimeMillis());
-
-        db.collection("feed_events").add(event);
     }
 
     public List<PostResponseDTO> getPosts(Long currentUserId){
