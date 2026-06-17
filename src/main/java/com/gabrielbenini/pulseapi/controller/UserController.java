@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -60,11 +61,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest){
 
-        User user = userRepository.findByEmailAndPassword(loginRequest.email(), loginRequest.password());
+        Optional<User> userOpt = userRepository
+                .findByEmailAndPassword(loginRequest.email(), loginRequest.password());
 
-        if (user == null) {
+        if (userOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        User user = userOpt.get();
 
         LoginResponseDTO response = new LoginResponseDTO(
                 user.getId(),
