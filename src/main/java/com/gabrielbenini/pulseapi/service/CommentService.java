@@ -12,6 +12,9 @@ import com.gabrielbenini.pulseapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -20,7 +23,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public CommentResponseDTO createComment(CommentRequestDTO requestDTO){
+    public CommentResponseDTO createComment(CommentRequestDTO requestDTO) {
 
         Post post = postRepository.findById(requestDTO.postId())
                 .orElseThrow(() -> new ResourceNotFoundException("Post nao encontrado"));
@@ -32,6 +35,17 @@ public class CommentService {
         commentRepository.save(comment);
 
         return CommentResponseDTO.fromEntity(comment);
+    }
 
+    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
+
+        if (!postRepository.existsById(postId)) {
+            throw new ResourceNotFoundException("Post nao encontrado com o ID " + postId);
+        }
+
+        return commentRepository.findByPostIdOrderByCreatedAtDesc(postId)
+                .stream()
+                .map(CommentResponseDTO::fromEntity)
+                .toList();
     }
 }
