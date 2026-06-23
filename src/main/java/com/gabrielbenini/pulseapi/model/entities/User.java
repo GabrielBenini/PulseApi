@@ -43,11 +43,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Like> likes;
 
-    // quem me segue
     @OneToMany(mappedBy = "following")
     private List<Follow> followers;
 
-    // quem eu sigo
     @OneToMany(mappedBy = "follower")
     private List<Follow> following;
 }
